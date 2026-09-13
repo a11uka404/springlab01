@@ -1,26 +1,41 @@
 package kz.iitu.spring.lab01.web;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
-import java.time.LocalDateTime;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 public class HelloController {
 
-    @Value("${app.owner:unknown}")
-    private String owner;
-
     @GetMapping("/hello")
-    public Greeting hello(@RequestParam(defaultValue = "world") String name) {
-        return new Greeting("Hello, " + name + "!", owner, LocalDateTime.now());
+    public String sayHello() {
+        return "Hello, Spring Boot!";
     }
 
     @GetMapping("/info")
-    public Info info() {
-        return new Info(owner, System.getProperty("java.version"), Runtime.getRuntime().availableProcessors());
+    public Map<String, String> getInfo() {
+        return Map.of(
+                "app", "spring-lab-01",
+                "developer", "Student Name",
+                "status", "Running"
+        );
     }
 
-    public record Greeting(String message, String owner, LocalDateTime timestamp) { }
-    public record Info(String owner, String javaVersion, int cpuCores) { }
+    @GetMapping("/sum")
+    public Map<String, Object> calculate(
+            @RequestParam int a,
+            @RequestParam int b) {
+
+        return Map.of(
+                "a", a,
+                "b", b,
+                "sum", a + b,
+                "difference", a - b,
+                "product", a * b
+        );
+    }
 }
