@@ -1,5 +1,6 @@
 package kz.iitu.spring.lab01.web;
-
+import kz.iitu.spring.lab01.notify.Notifier;
+import org.springframework.beans.factory.annotation.Qualifier;
 import kz.iitu.spring.lab01.scope.TicketOffice;
 import kz.iitu.spring.lab01.lifecycle.LifecycleDemo;
 import kz.iitu.spring.lab01.notify.NotificationService;
@@ -14,15 +15,18 @@ public class Lab2Controller {
     private final NotificationService notifications;
     private final LifecycleDemo lifecycle;
     private final TicketOffice ticketOffice;
+    private final Notifier customNotifier;
 
     public Lab2Controller(
             NotificationService notifications,
             LifecycleDemo lifecycle,
-            TicketOffice ticketOffice) {
+            TicketOffice ticketOffice,
+            @Qualifier("upper") Notifier customNotifier) {
 
         this.notifications = notifications;
         this.lifecycle = lifecycle;
         this.ticketOffice = ticketOffice;
+        this.customNotifier = customNotifier;
     }
 
     @GetMapping("/notify")
@@ -45,6 +49,11 @@ public class Lab2Controller {
     @GetMapping("/scopes")
     public Map<String, Object> scopes() {
         return ticketOffice.demo();
+    }
+
+    @GetMapping("/custom")
+    public String custom(@RequestParam(defaultValue = "Hello") String text) {
+        return customNotifier.send(text);
     }
 
 }
