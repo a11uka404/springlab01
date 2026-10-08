@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.validation.annotation.Validated;
@@ -16,8 +17,19 @@ import java.time.Duration;
 public record AppProperties(
         @NotBlank String owner,
         @NotBlank String group,
-        @Valid Mail mail
+        @Valid Mail mail,
+        @Valid Ui ui
 ) {
+
+    public record Ui(
+            @DefaultValue("LIGHT")
+            @Pattern(regexp = "LIGHT|DARK")
+            String theme,
+
+            @Min(5)
+            @Max(50)
+            int itemsPerPage
+    ) {}
 
     public record Mail(
             @NotBlank
@@ -34,6 +46,5 @@ public record AppProperties(
 
             @DefaultValue("true")
             boolean enabled
-    ) {
-    }
+    ) {}
 }

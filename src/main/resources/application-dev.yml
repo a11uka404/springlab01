@@ -5,6 +5,9 @@ app:
   mail:
     enabled: false
     retry-count: 1
+  ui:
+    theme: DARK
+    items-per-page: 10
 
 logging:
   level:

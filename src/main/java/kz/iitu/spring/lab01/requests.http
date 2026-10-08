@@ -1,0 +1,2 @@
+### Delete item
+DELETE http://localhost:8080/api/lab4/item/5
